@@ -1,4 +1,4 @@
-﻿using InternshipPrimeHolding.Model;
+﻿using Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

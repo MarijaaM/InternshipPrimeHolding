@@ -1,5 +1,5 @@
 ﻿using DataAccess.Infrastructure;
-using InternshipPrimeHolding.Model;
+using Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,43 +17,31 @@ public class WorkTaskRepository : IWorkTaskRepository
         _databaseContext = databaseContext;
     }
 
-    public async Task<bool> Add(WorkTask task)
+    public async Task Add(WorkTask task)
     {
         _databaseContext.WorkTasks.Add(task);
-        try
-        {
-            await _databaseContext.SaveChangesAsync();
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
+        await _databaseContext.SaveChangesAsync();
+
     }
 
 
-    public async Task<bool> Delete(long id)
+    public async Task Delete(long id)
     {
         WorkTask? workTask = await Get(id);
         if (workTask == null)
         {
-            return false;
+            throw new BadRequestException($"Task with id: {id} does not exsist");
         }
         _databaseContext.WorkTasks.Remove(workTask);
-        try
-        {
-            await _databaseContext.SaveChangesAsync();
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
+        await _databaseContext.SaveChangesAsync();
     }
 
     public async Task<WorkTask?> Get(long id)
     {
-        return await _databaseContext.WorkTasks.Include(x => x.Assignee).FirstOrDefaultAsync(x => x.Id == id);
+        return await _databaseContext.WorkTasks
+                        .Include(x => x.Assignee)
+                        .Include(x => x.States)
+                        .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<WorkTask>> GetAll()
@@ -61,26 +49,17 @@ public class WorkTaskRepository : IWorkTaskRepository
         return await _databaseContext.WorkTasks.Include(x => x.Assignee).ToListAsync();
     }
 
-    public async Task<bool> Update(long id, WorkTask workTask)
+    public async Task Update(long id, WorkTask workTask)
     {
         WorkTask? wt = await Get(id);
         if (wt == null)
         {
-            return false;
+            throw new BadRequestException($"Task with id: {id} does not exsist");
         }
         wt.Title = workTask.Title;
         wt.Description = workTask.Description;
         wt.DueDate = workTask.DueDate;
         wt.Assignee = workTask.Assignee;
-        wt.State = workTask.State;
-        try
-        {
-            await _databaseContext.SaveChangesAsync();
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
+        await _databaseContext.SaveChangesAsync();
     }
 }

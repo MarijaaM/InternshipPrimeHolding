@@ -1,11 +1,6 @@
 ﻿using DataAccess.Infrastructure;
-using InternshipPrimeHolding.Model;
+using Model;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.EmployeeRepository;
 
@@ -16,37 +11,21 @@ public class EmployeeRepository : IEmployeeRepository
     {
         _databaseContext = databaseContext;
     }
-    public async Task<bool> Add(Employee employee)
+    public async Task Add(Employee employee)
     {
         _databaseContext.Employees.Add(employee);
-        try
-        {
-            await _databaseContext.SaveChangesAsync();
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
+        await _databaseContext.SaveChangesAsync();
     }
 
-    public async Task<bool> Delete(long id)
+    public async Task Delete(long id)
     {
         Employee? employee = await Get(id);
         if (employee == null)
         {
-            return false;
+            throw new BadRequestException($"Employee with id: {id} does not exsist");
         }
         _databaseContext.Employees.Remove(employee);
-        try
-        {
-            await _databaseContext.SaveChangesAsync();
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
+        await _databaseContext.SaveChangesAsync();
     }
 
     public async Task<Employee?> Get(long id)
@@ -63,12 +42,12 @@ public class EmployeeRepository : IEmployeeRepository
                         .ToListAsync();
     }
 
-    public async Task<bool> Update(long id, Employee employee)
+    public async Task Update(long id, Employee employee)
     {
         Employee? e = await Get(id);
         if (e == null)
         {
-            return false;
+            throw new BadRequestException($"Employee with id: {id} does not exsist");
         }
         e.FullName = employee.FullName;
         e.WorkTasks = employee.WorkTasks;
@@ -77,15 +56,7 @@ public class EmployeeRepository : IEmployeeRepository
         e.DateOfBirth = employee.DateOfBirth;
         e.MonthlySalary = employee.MonthlySalary;
 
-        try
-        {
-            await _databaseContext.SaveChangesAsync();
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
+        await _databaseContext.SaveChangesAsync();
     }
 
 

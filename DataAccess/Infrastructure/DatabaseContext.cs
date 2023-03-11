@@ -1,10 +1,5 @@
-﻿using InternshipPrimeHolding.Model;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Model;
+using Microsoft.EntityFrameworkCore;  
 
 namespace DataAccess.Infrastructure;
 
@@ -12,6 +7,7 @@ public class DatabaseContext:DbContext
 {
     public DbSet<WorkTask> WorkTasks { get; set; }
     public DbSet<Employee> Employees { get; set; }
+    public DbSet<TaskStateRecord> TaskStateHistory{ get; set; }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 

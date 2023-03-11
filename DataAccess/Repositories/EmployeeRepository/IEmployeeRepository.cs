@@ -1,4 +1,4 @@
-﻿using InternshipPrimeHolding.Model;
+﻿using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +9,6 @@ namespace DataAccess.Repositories.EmployeeRepository
 {
     public interface IEmployeeRepository:IRepository<Employee>
     {
+        Task Delete(long id);
     }
 }

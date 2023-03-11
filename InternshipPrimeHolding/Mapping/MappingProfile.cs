@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using InternshipPrimeHolding.DTO;
-using InternshipPrimeHolding.Model;
+using Model;
 
 namespace InternshipPrimeHolding.Mapping
 {

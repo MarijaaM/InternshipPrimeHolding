@@ -1,4 +1,4 @@
-﻿using InternshipPrimeHolding.Model;
+﻿using Model;
 
 namespace InternshipPrimeHolding.DTO
 {

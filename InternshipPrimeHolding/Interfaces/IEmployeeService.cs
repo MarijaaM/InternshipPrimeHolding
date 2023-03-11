@@ -1,4 +1,4 @@
-﻿using InternshipPrimeHolding.Model;
+﻿using Model;
 
 namespace InternshipPrimeHolding.Interfaces
 {
@@ -6,8 +6,8 @@ namespace InternshipPrimeHolding.Interfaces
     {
         Task<List<Employee>> GetAll();
         Task<Employee?> Get(long id);
-        Task<bool> Add(Employee task);
-        Task<bool> Update(long id,Employee entity);
-        Task<bool> Delete(long id);
+        Task Add(Employee task);
+        Task Update(long id,Employee entity);
+        Task Delete(long id);
     }
 }

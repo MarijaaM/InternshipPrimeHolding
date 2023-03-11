@@ -1,5 +1,5 @@
 ﻿using InternshipPrimeHolding.DTO;
-using InternshipPrimeHolding.Model;
+using Model;
 
 namespace InternshipPrimeHolding.Interfaces
 {

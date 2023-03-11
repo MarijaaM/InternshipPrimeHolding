@@ -1,9 +1,7 @@
-﻿using DataAccess.Repositories.EmployeeRepository; 
+﻿using DataAccess.Repositories.EmployeeRepository;
 using DataAccess.Repositories.WorkTaskRepository;
 using InternshipPrimeHolding.Interfaces;
-using InternshipPrimeHolding.Model;
 using Model;
-
 namespace InternshipPrimeHolding.Services;
 
 public class WorkTaskService : IWorkTaskService
@@ -17,44 +15,40 @@ public class WorkTaskService : IWorkTaskService
         _employeeRepository = employeeRepository;
     }
 
-    public Task<bool> Add(WorkTask task)
+    public async Task Add(WorkTask task)
     {
-        return _workTaskRepository.Add(task);
+        await _workTaskRepository.Add(task);
     }
 
-    public async Task<bool> Assign(long workTaskId, long employeeId)
+    public async Task Assign(long workTaskId, long employeeId)
     {
-        Employee? employee = await _employeeRepository.Get(employeeId);
-        WorkTask? workTask = await Get(workTaskId);
-        if (employee != null && workTask != null)
-        {
-            workTask.AssigneeId = employeeId;
-            return await Update(workTaskId, workTask);
-        }
-        return false;
+        Employee? employee = await _employeeRepository.Get(employeeId)
+            ?? throw new BadRequestException($"Employee with id: {employeeId} does not exsist");
+
+        WorkTask? workTask = await Get(workTaskId)
+            ?? throw new BadRequestException($"Task with id: {workTaskId} does not exsist");
+
+        workTask.AssigneeId = employeeId;
+        await Update(workTaskId, workTask);
     }
 
-    public async Task<bool> ChangeState(long workTaskId, TaskState taskState)
+    public async Task ChangeState(long workTaskId, TaskState taskState)
     {
+        //TODO
         WorkTask? workTask = await Get(workTaskId);
         if (workTask != null)
         {
-            if (workTask.State != taskState)
-            {
-                workTask.State = taskState;
-                return await Update(workTaskId, workTask);
-            }
-            if(taskState==TaskState.Done)
-            {
-                workTask.TaskDone = DateTime.Now;
-            }
+            /*  if (workTask.State != taskState)
+              {
+                  workTask.State = taskState;
+                  return await Update(workTaskId, workTask);
+              } */
         }
-        return false;
     }
 
-    public Task<bool> Delete(long id)
+    public async Task Delete(long id)
     {
-        return _workTaskRepository.Delete(id);
+        await _workTaskRepository.Delete(id);
     }
 
     public Task<WorkTask?> Get(long id)
@@ -67,8 +61,8 @@ public class WorkTaskService : IWorkTaskService
         return _workTaskRepository.GetAll();
     }
 
-    public Task<bool> Update(long id, WorkTask entity)
+    public async Task Update(long id, WorkTask entity)
     {
-        return _workTaskRepository.Update(id, entity);
+        await _workTaskRepository.Update(id, entity);
     }
 }

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using InternshipPrimeHolding.DTO;
 using InternshipPrimeHolding.Interfaces;
-using InternshipPrimeHolding.Model;
-using InternshipPrimeHolding.Services;
-using Microsoft.AspNetCore.Mvc;
 using Model;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,7 +35,7 @@ public class WorkTaskController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(long id)
     {
-        WorkTaskDTO task = _mapper.Map<WorkTaskDTO>(await _workTaskService.Get(id)); 
+        WorkTaskDTO task = _mapper.Map<WorkTaskDTO>(await _workTaskService.Get(id));
         if (task != null)
         {
             return Ok(task);
@@ -52,10 +50,9 @@ public class WorkTaskController : ControllerBase
         if (!_validatorService.ValidateWorkTask(workTask))
             return BadRequest();
 
-        WorkTask task = _mapper.Map<WorkTask>(workTask); 
-        if (await _workTaskService.Add(task)) 
-            return Ok(); 
-        return BadRequest();  
+        WorkTask task = _mapper.Map<WorkTask>(workTask);
+        await _workTaskService.Add(task);
+        return Ok();
     }
 
     // PUT api/<TaskController>/5
@@ -66,38 +63,26 @@ public class WorkTaskController : ControllerBase
             return BadRequest();
 
         WorkTask task = _mapper.Map<WorkTask>(workTask);
-        if (await _workTaskService.Update(id, task))
-        {
-            return Ok();
-        }
-        else
-        {
-            return BadRequest();
-        }
+        await _workTaskService.Update(id, task);
+        return Ok();
     }
-     
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {
-        bool response = await _workTaskService.Delete(id);
-        if (response)
-        {
-            return Ok();
-        }
-        return BadRequest();
+        await _workTaskService.Delete(id);
+        return Ok();
     }
     [HttpPost("Assign/{workTaskId}/{employeeId}")]
     public async Task<IActionResult> Assign(long workTaskId, long employeeId)
-    { 
-        if (await _workTaskService.Assign(workTaskId, employeeId)) 
-            return Ok(); 
-        return BadRequest();
+    {
+        await _workTaskService.Assign(workTaskId, employeeId);
+        return Ok();
     }
     [HttpPut("State/{workTaskId}/{taskState}")]
     public async Task<IActionResult> ChangeState(long workTaskId, TaskState taskState)
-    {  
-        if (await _workTaskService.ChangeState(workTaskId, taskState)) 
-            return Ok(); 
-        return BadRequest();
+    {
+        await _workTaskService.ChangeState(workTaskId, taskState);
+        return Ok();
     }
 }

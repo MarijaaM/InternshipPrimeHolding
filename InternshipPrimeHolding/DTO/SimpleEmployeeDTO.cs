@@ -1,6 +1,4 @@
-﻿using InternshipPrimeHolding.Model;
-
-namespace InternshipPrimeHolding.DTO
+﻿namespace InternshipPrimeHolding.DTO
 {
     public class SimpleEmployeeDTO
     {

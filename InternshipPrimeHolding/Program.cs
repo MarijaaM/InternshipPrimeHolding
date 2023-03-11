@@ -52,7 +52,6 @@ builder.Services.AddControllers();
 
 
 var app = builder.Build();
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -62,6 +61,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 
+app.UseExceptionHandler("/Error");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

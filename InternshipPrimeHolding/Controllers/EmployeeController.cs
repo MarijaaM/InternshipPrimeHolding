@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using InternshipPrimeHolding.DTO;
 using InternshipPrimeHolding.Interfaces;
-using InternshipPrimeHolding.Model;
+using Model;
 using InternshipPrimeHolding.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +14,7 @@ namespace InternshipPrimeHolding.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IMapper _mapper; 
+        private readonly IMapper _mapper;
         private readonly IValidatorService _validatorService;
         public EmployeeController(IEmployeeService employeeService, IMapper mapper, IValidatorService validatorService)
         {
@@ -22,59 +22,56 @@ namespace InternshipPrimeHolding.Controllers
             _mapper = mapper;
             _validatorService = validatorService;
         }
-         
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             List<EmployeeDTO> employees = _mapper.Map<List<EmployeeDTO>>(await _employeeService.GetAll());
             return Ok(employees);
         }
-         
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            EmployeeDTO employee = _mapper.Map<EmployeeDTO>(await _employeeService.Get(id)); 
+            EmployeeDTO employee = _mapper.Map<EmployeeDTO>(await _employeeService.Get(id));
             if (employee != null)
             {
                 return Ok(employee);
             }
             return NoContent();
         }
-         
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddEmployeeDTO employee)
         {
-            if(!_validatorService.ValidateEmployee(employee))
+            if (!_validatorService.ValidateEmployee(employee))
                 return BadRequest();
 
 
             Employee e = _mapper.Map<Employee>(employee);
 
-            if (await _employeeService.Add(e))
-                return Ok();
-            return BadRequest();
+            await _employeeService.Add(e);
+            return Ok();
 
         }
-         
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(long id, [FromBody] AddEmployeeDTO employee)
-        { 
+        {
             if (!_validatorService.ValidateEmployee(employee))
                 return BadRequest();
 
             Employee e = _mapper.Map<Employee>(employee);
 
-            if (await _employeeService.Update(id, e))
-                return Ok();
-            return BadRequest();
+            await _employeeService.Update(id, e);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (await _employeeService.Delete(id))
-                return Ok();
-            return BadRequest();
+            await _employeeService.Delete(id);
+            return Ok();
         }
     }
 }
