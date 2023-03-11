@@ -1,4 +1,5 @@
 ﻿using DataAccess.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Model;
 
 namespace DataAccess.Repositories.TaskStateHistoyRepository;
@@ -18,22 +19,22 @@ public class TaskStateHistoryRepository : ITaskStateHistoryRepository
         await _databaseContext.SaveChangesAsync();
     }
 
-
-    public Task<TaskStateRecord?> Get(long id)
+    public async Task<TaskStateRecord?> Get(long workTaskId)
     {
-        //TODO
-        throw new NotImplementedException();
+        return await _databaseContext.TaskStateHistory
+                    .OrderByDescending(x => x.Timestamp)
+                    .FirstOrDefaultAsync(x => x.WorkTaskId == workTaskId);
     }
 
-    public Task<List<TaskStateRecord>> GetAll()
+    public async Task<List<TaskStateRecord>> GetFinishedTaskRecords(DateTime from, DateTime to)
     {
-        //TODO
-        throw new NotImplementedException();
-    }
-
-    public Task Update(long id, TaskStateRecord entity)
-    {
-        //TODO
-        throw new NotImplementedException();
+        return await _databaseContext.TaskStateHistory
+                                .Include(x => x.WorkTask)
+                                .Where(x => x.Timestamp > from
+                                            && x.Timestamp < to
+                                            && x.State == TaskState.Done
+                                            && x.WorkTask != null
+                                            && x.WorkTask.AssigneeId != null)
+                                .ToListAsync();
     }
 }

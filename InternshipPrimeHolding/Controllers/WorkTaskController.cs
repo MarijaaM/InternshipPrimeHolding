@@ -45,7 +45,7 @@ public class WorkTaskController : ControllerBase
 
     // POST api/<TaskController>
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] AddWorkTaskDTO workTask)
+    public async Task<IActionResult> Add([FromBody] AddWorkTaskDTO workTask)
     {
         if (!_validatorService.ValidateWorkTask(workTask))
             return BadRequest();
@@ -57,7 +57,7 @@ public class WorkTaskController : ControllerBase
 
     // PUT api/<TaskController>/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(long id, [FromBody] AddWorkTaskDTO workTask)
+    public async Task<IActionResult> Update(long id, [FromBody] AddWorkTaskDTO workTask)
     {
         if (!_validatorService.ValidateWorkTask(workTask))
             return BadRequest();

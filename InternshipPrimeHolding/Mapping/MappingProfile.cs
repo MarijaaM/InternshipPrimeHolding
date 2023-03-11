@@ -15,6 +15,7 @@ namespace InternshipPrimeHolding.Mapping
             CreateMap<WorkTask, WorkTaskDTO>().ReverseMap();
             CreateMap<WorkTask,AddWorkTaskDTO>().ReverseMap();
             CreateMap<WorkTask,SimpleWorkTaskDTO>().ReverseMap();
+            CreateMap<TaskStateRecord, TaskStateRecordDTO>().ReverseMap();
             
         }
     }

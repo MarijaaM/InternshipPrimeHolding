@@ -15,34 +15,40 @@ namespace InternshipPrimeHolding.Controllers
     {
         private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
+        private readonly ICustomMapperService _customMapper;
         private readonly IValidatorService _validatorService;
-        public EmployeeController(IEmployeeService employeeService, IMapper mapper, IValidatorService validatorService)
+
+        public EmployeeController(IEmployeeService employeeService, IMapper mapper, ICustomMapperService customMapper, IValidatorService validatorService)
         {
             _employeeService = employeeService;
             _mapper = mapper;
+            _customMapper = customMapper;
             _validatorService = validatorService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            List<EmployeeDTO> employees = _mapper.Map<List<EmployeeDTO>>(await _employeeService.GetAll());
+            List<EmployeeDTO> employees = (await _employeeService.GetAll())
+                                                .Select(x => _customMapper.MapEmpoloyee(x))
+                                                .ToList();
             return Ok(employees);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(long id)
         {
-            EmployeeDTO employee = _mapper.Map<EmployeeDTO>(await _employeeService.Get(id));
-            if (employee != null)
-            {
-                return Ok(employee);
-            }
-            return NoContent();
+            Employee? employee = await _employeeService.Get(id);
+            if (employee == null)
+                return NoContent();
+
+            EmployeeDTO employeeDTO = _customMapper.MapEmpoloyee(employee);
+
+            return Ok(employeeDTO);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AddEmployeeDTO employee)
+        public async Task<IActionResult> Add([FromBody] AddEmployeeDTO employee)
         {
             if (!_validatorService.ValidateEmployee(employee))
                 return BadRequest();
@@ -56,7 +62,7 @@ namespace InternshipPrimeHolding.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(long id, [FromBody] AddEmployeeDTO employee)
+        public async Task<IActionResult> Update(long id, [FromBody] AddEmployeeDTO employee)
         {
             if (!_validatorService.ValidateEmployee(employee))
                 return BadRequest();
@@ -68,10 +74,18 @@ namespace InternshipPrimeHolding.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(long id)
         {
             await _employeeService.Delete(id);
             return Ok();
+        }
+        [HttpGet("Best")]
+        public async Task<IActionResult> GetBest5()
+        {
+            List<EmployeeDTO> employees = (await _employeeService.GetBest5())
+                                                                    .Select(x => _customMapper.MapEmpoloyee(x))
+                                                                    .ToList();
+            return Ok(employees);
         }
     }
 }

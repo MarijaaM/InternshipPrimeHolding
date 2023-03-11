@@ -9,5 +9,6 @@ namespace InternshipPrimeHolding.Interfaces
         Task Add(Employee task);
         Task Update(long id,Employee entity);
         Task Delete(long id);
+        Task<List<Employee?>> GetBest5();
     }
 }

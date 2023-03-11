@@ -30,7 +30,7 @@ public class WorkTaskRepository : IWorkTaskRepository
         WorkTask? workTask = await Get(id);
         if (workTask == null)
         {
-            throw new BadRequestException($"Task with id: {id} does not exsist");
+            throw new BadRequestException($"Task with id: {id} does not exist");
         }
         _databaseContext.WorkTasks.Remove(workTask);
         await _databaseContext.SaveChangesAsync();
@@ -46,15 +46,19 @@ public class WorkTaskRepository : IWorkTaskRepository
 
     public async Task<List<WorkTask>> GetAll()
     {
-        return await _databaseContext.WorkTasks.Include(x => x.Assignee).ToListAsync();
+        return await _databaseContext.WorkTasks
+                        .Include(x => x.States)
+                        .Include(x => x.Assignee)
+                        .ToListAsync();
     }
+     
 
     public async Task Update(long id, WorkTask workTask)
     {
         WorkTask? wt = await Get(id);
         if (wt == null)
         {
-            throw new BadRequestException($"Task with id: {id} does not exsist");
+            throw new BadRequestException($"Task with id: {id} does not exist");
         }
         wt.Title = workTask.Title;
         wt.Description = workTask.Description;

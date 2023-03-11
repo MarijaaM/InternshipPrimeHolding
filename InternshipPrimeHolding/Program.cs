@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using DataAccess.Repositories.TaskStateHistoyRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +27,11 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IWorkTaskService, WorkTaskService>();
+builder.Services.AddScoped<ITaskStateHistoryRepository, TaskStateHistoryRepository>();
 builder.Services.AddScoped<IValidatorService, ValidatorService>();
 builder.Services.AddScoped<IWorkTaskRepository, WorkTaskRepository>();
-builder.Services.AddScoped<IEmployeeRepository,EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<ICustomMapperService, CustomMapperService>();
 
 var mapperConfig = new MapperConfiguration(mc =>
 {

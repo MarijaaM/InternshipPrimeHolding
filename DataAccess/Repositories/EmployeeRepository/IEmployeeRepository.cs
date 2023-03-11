@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace DataAccess.Repositories.EmployeeRepository
 {
     public interface IEmployeeRepository:IRepository<Employee>
-    {
-        Task Delete(long id);
+    { 
     }
 }

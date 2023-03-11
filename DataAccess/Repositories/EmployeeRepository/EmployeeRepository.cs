@@ -22,7 +22,7 @@ public class EmployeeRepository : IEmployeeRepository
         Employee? employee = await Get(id);
         if (employee == null)
         {
-            throw new BadRequestException($"Employee with id: {id} does not exsist");
+            throw new BadRequestException($"Employee with id: {id} does not exist");
         }
         _databaseContext.Employees.Remove(employee);
         await _databaseContext.SaveChangesAsync();
@@ -32,6 +32,7 @@ public class EmployeeRepository : IEmployeeRepository
     {
         return await _databaseContext.Employees
                         .Include(x => x.WorkTasks)
+                        .ThenInclude(x => x.States)
                         .FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -39,6 +40,7 @@ public class EmployeeRepository : IEmployeeRepository
     {
         return await _databaseContext.Employees
                         .Include(x => x.WorkTasks)
+                        .ThenInclude(x => x.States)
                         .ToListAsync();
     }
 
@@ -47,7 +49,7 @@ public class EmployeeRepository : IEmployeeRepository
         Employee? e = await Get(id);
         if (e == null)
         {
-            throw new BadRequestException($"Employee with id: {id} does not exsist");
+            throw new BadRequestException($"Employee with id: {id} does not exist");
         }
         e.FullName = employee.FullName;
         e.WorkTasks = employee.WorkTasks;

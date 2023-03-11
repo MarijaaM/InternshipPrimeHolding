@@ -9,5 +9,4 @@ namespace DataAccess.Repositories.WorkTaskRepository;
 
 public interface IWorkTaskRepository : IRepository<WorkTask>
 {
-    Task Delete(long id);
 }

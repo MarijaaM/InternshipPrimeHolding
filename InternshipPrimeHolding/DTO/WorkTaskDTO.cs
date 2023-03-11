@@ -10,5 +10,6 @@ namespace InternshipPrimeHolding.DTO
         public DateTime DueDate { get; set; }
         public TaskState State { get; set; }
         public virtual SimpleEmployeeDTO? Assignee { get; set; }
+        public List<TaskStateRecordDTO> States { get; set; } = new();
     }
 }
