@@ -1,0 +1,26 @@
+<h1 style="text-align: center;">Project info</h1>
+<form [formGroup]="ProjectForm" >
+<div class="inline">
+
+    <div class="form-group">
+        <label >Name</label>
+        <input type="text"  class="form-control"  formControlName="name" required >
+    </div>
+    <div class="form-group">
+        <label >Description</label>
+        <input type="text"  class="form-control"  formControlName="description" required >
+    </div>
+    <div class="form-group">
+        <label >Client name</label>
+        <input type="text"  class="form-control"  formControlName="clientName" required >
+    </div>
+    
+    <br>
+    <div style="margin-top: 22px;" class="form-group">
+        <button (click)="Save()" class="btn btn-success">Save changes</button>
+    </div>
+</div>
+</form>
+
+<h3>Project tasks</h3>
+<app-work-tasks [project]="project"></app-work-tasks>

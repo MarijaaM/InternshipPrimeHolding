@@ -1,0 +1,108 @@
+<div style="height: 50px;">
+    <button class="btn btn-danger" style="float: right;" (click)="Close()">×</button>
+</div>
+<div *ngIf="!editForm">
+    <form [formGroup]="formWorkTask">
+        <h4>Add task</h4>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" formControlName="title" required>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" class="form-control" formControlName="description" required>
+        </div>
+        <div class="form-group">
+            <label>Due date</label>
+            <input type="date" class="form-control" formControlName="dueDate" required>
+        </div>
+
+        <br>
+        <div class="form-group">
+            <button (click)="AddOrUpdateTask()" class="btn btn-success">Add task</button>
+        </div>
+    </form>
+</div>
+
+
+<div *ngIf="editForm" class="row">
+    <div class="col-6">
+        <form [formGroup]="formWorkTask">
+            <h4>Task info</h4>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" formControlName="title" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" formControlName="description" required>
+            </div>
+            <div class="form-group">
+                <label>Due date</label>
+                <input type="date" class="form-control" formControlName="dueDate" required>
+            </div>
+
+            <br>
+            <div class="form-group">
+                <button (click)="AddOrUpdateTask()" class="btn btn-success">Submit</button>
+            </div>
+        </form>
+
+        <br>
+        <h4>Assignee employee</h4>
+        
+        <form [formGroup]="formChangeAssignee"> 
+            <div class="inline">  
+                <div class="form-group">
+                    <label>Assignee</label>
+                    <select style="width: 250px;" type="text" class="form-control" formControlName="assignee" >
+                        <option *ngFor="let employee of employees" [value]="employee.id">
+                            {{employee.fullName}}
+                          </option>
+                      
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button style="margin-top: 22px;" (click)="ChangeAssignee()" class="btn btn-success">Change assignee</button>
+                </div>
+            </div>
+        </form>
+        <br>
+    </div>
+    <div class="col-6">
+        <h4>Task state</h4>
+        
+        <form [formGroup]="formChangeState"> 
+            <div class="inline">  
+                <div class="form-group">
+                    <label>Task state</label>
+                    <select style="width: 250px;" type="text" class="form-control" formControlName="state" >
+                        <option value="ToDo">ToDo</option>
+                        <option value="InProgress">InProgress</option>
+                        <option value="InQA">InQA</option>
+                        <option value="Done">Done</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button style="margin-top: 22px;" (click)="ChangeState()" class="btn btn-success">Change state</button>
+                </div>
+            </div>
+        </form>
+        <br>
+        <h4>Task state history</h4> 
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">State</th>
+                    <th scope="col">Change time</th> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let state of workTask.states">
+                    <td>{{state.state.toString()}}</td>  
+                    <td>{{state.timestamp | date:'dd.MM.yyyy hh:mm'}}</td>  
+                </tr> 
+            </tbody>
+        </table> 
+    </div>
+</div>
