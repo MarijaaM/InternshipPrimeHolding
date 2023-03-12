@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class EmployeeService {
+  
 
   constructor(private httpClient:HttpClient) { }
 
@@ -26,6 +27,9 @@ export class EmployeeService {
   }
   Delete(id:number):Observable<any> {
     return this.httpClient.delete<any>(environment.serverUrl + '/api/Employee/'+id); 
+  } 
+  GetBest():Observable<Array<Employee>> {
+    return this.httpClient.get<Array<Employee>>(environment.serverUrl + '/api/Employee/Best'); 
   } 
 
 }

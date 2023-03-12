@@ -49,7 +49,7 @@ export class EmployeeDetailsComponent implements OnInit {
       if(this.editForm)
       {
         employee.id=this.employee.id;
-        this.employeeService.Edit(employee).subscribe(data=>alert("Successfully updated"));
+        this.employeeService.Edit(employee).subscribe(data=>this.dialogRef.close());
       }
       else
       {
@@ -60,9 +60,5 @@ export class EmployeeDetailsComponent implements OnInit {
     {
       alert("Invalid input");
     }
-  }
-  DeleteTask(id:number)
-  {
-     
   }
 }

@@ -16,7 +16,8 @@ import { WorkTaskDetailsComponent } from './components/work-task-details/work-ta
 import { ProjectComponent } from './components/project/project.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { ProjectAddComponent } from './components/project-add/project-add.component';
-import { StatisticsComponent } from './statistics/statistics.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { BestEmployeesComponent } from './components/best-employees/best-employees.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StatisticsComponent } from './statistics/statistics.component';
     ProjectComponent,
     ProjectsComponent,
     ProjectAddComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    BestEmployeesComponent
   ],
   imports: [
     BrowserModule,

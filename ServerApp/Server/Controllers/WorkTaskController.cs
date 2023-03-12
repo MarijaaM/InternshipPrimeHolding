@@ -88,4 +88,9 @@ public class WorkTaskController : ControllerBase
         await _workTaskService.ChangeState(workTaskId, taskState);
         return Ok();
     }
+    [HttpGet("Statistics")]
+    public async Task<IActionResult> GetStatistics()
+    { 
+        return Ok(await _workTaskService.GetWorkTaskStats());
+    }
 }

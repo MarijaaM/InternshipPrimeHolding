@@ -43,7 +43,6 @@
                     <th scope="col">Description</th>
                     <th scope="col">Due date</th>
                     <th scope="col">State</th> 
-                    <th scope="col"></th> 
                 </tr>
                 </thead>
                 <tbody>
@@ -52,9 +51,6 @@
                     <td>{{workTask.description}}</td> 
                     <td>{{workTask.dueDate | date:'dd.MM.yyyy'}}</td> 
                     <td>{{workTask.state.toString()}}</td>  
-                    <td>  
-                    <button class="btn btn-danger" (click)="DeleteTask(workTask.id)">Delete</button>
-                    </td> 
                 </tr> 
                 </tbody>
           </table>

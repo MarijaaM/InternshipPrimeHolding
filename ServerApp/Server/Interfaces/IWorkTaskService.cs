@@ -1,4 +1,5 @@
 ﻿using Model;
+using Server.DTO.WorkTask;
 
 namespace Server.Interfaces;
 
@@ -11,4 +12,5 @@ public interface IWorkTaskService
     Task Delete(long id);
     Task Assign(long workTaskId, long employeeId);
     Task ChangeState(long workTaskId, TaskState taskState);
+    Task<List<WorkTaskStats>> GetWorkTaskStats();
 }

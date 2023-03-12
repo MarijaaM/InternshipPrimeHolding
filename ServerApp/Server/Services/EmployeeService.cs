@@ -47,9 +47,9 @@ namespace Server.Services
 
         public async Task<List<Employee?>> GetBest5()
         {
-            DateTime dateTime = DateTime.Now.AddMonths(0);
-            DateTime from = new(dateTime.Year, dateTime.Month, 1);
-            DateTime to = new(dateTime.Year, dateTime.AddMonths(1).Month, 1);
+            DateTime date = DateTime.Now.AddMonths(0);
+            DateTime from = new(date.Year, date.Month, 1);
+            DateTime to = new (date.Year, (date.Month % 12) + 1, 1);
             List<TaskStateRecord> records = await _taskStateHistoryRepository.GetFinishedTaskRecords(from, to);
 
             List<EmployeeTaskCount> employeeTaskCounts = records.GroupBy(x => (long)x.WorkTask.AssigneeId)

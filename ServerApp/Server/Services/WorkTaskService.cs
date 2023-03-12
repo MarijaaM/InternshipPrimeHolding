@@ -1,8 +1,10 @@
 ﻿using DataAccess.Repositories.EmployeeRepository;
 using DataAccess.Repositories.TaskStateHistoyRepository;
 using DataAccess.Repositories.WorkTaskRepository;
-using Server.Interfaces; 
+using Server.Interfaces;
 using Model;
+using Server.DTO.WorkTask;
+
 namespace Server.Services;
 
 public class WorkTaskService : IWorkTaskService
@@ -43,22 +45,22 @@ public class WorkTaskService : IWorkTaskService
     }
 
     public async Task ChangeState(long workTaskId, TaskState taskState)
-    { 
+    {
         TaskStateRecord? currentTaskState = await _taskStateHistoryRepository.Get(workTaskId);
-        if(await _workTaskRepository.Get(workTaskId)==null)
+        if (await _workTaskRepository.Get(workTaskId) == null)
             throw new BadRequestException($"Task with id {workTaskId} does not exist");
 
 
         if (currentTaskState?.State == taskState)
             throw new BadRequestException($"Task with id {workTaskId} is already in state: {taskState}");
-         
+
         TaskStateRecord newState = new()
         {
             Timestamp = DateTime.Now,
             State = taskState,
             WorkTaskId = workTaskId
         };
-        await _taskStateHistoryRepository.Add(newState); 
+        await _taskStateHistoryRepository.Add(newState);
     }
 
     public async Task Delete(long id)
@@ -79,5 +81,33 @@ public class WorkTaskService : IWorkTaskService
     public async Task Update(long id, WorkTask entity)
     {
         await _workTaskRepository.Update(id, entity);
+    }
+    public async Task<List<WorkTaskStats>> GetWorkTaskStats()
+    {
+        DateTime date = DateTime.Now.AddYears(-1);
+        List<WorkTaskStats> stats = new();
+        for (int i = 0; i < 12; i++)
+        {
+            DateTime from = new DateTime(date.Year, date.Month, 1);
+            DateTime to = new DateTime(date.Year, (date.Month % 12) + 1, 1);
+            var result = await _taskStateHistoryRepository.GetTaskRecordsByDate(from, to);
+            List<StatsRecord> statsRecords = new()
+            {
+                new StatsRecord(TaskState.ToDo, result.Where(x => x.State == TaskState.ToDo).Count()),
+                new StatsRecord(TaskState.InProgress, result.Where(x => x.State == TaskState.InProgress).Count()),
+                new StatsRecord(TaskState.InQA, result.Where(x => x.State == TaskState.InQA).Count()),
+                new StatsRecord(TaskState.Done, result.Where(x => x.State == TaskState.Done).Count())
+            };
+            
+            stats.Add(new()
+            {
+                Month = date.ToString("MMMM yyyy"),
+                StatsRecords = statsRecords
+            });
+
+            date = date.AddMonths(1);
+        }
+        return stats;
+
     }
 }

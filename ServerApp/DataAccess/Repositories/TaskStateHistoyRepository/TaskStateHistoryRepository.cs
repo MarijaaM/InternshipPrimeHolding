@@ -37,4 +37,12 @@ public class TaskStateHistoryRepository : ITaskStateHistoryRepository
                                             && x.WorkTask.AssigneeId != null)
                                 .ToListAsync();
     }
+    public async Task<List<TaskStateRecord>> GetTaskRecordsByDate(DateTime from, DateTime to)
+    {
+        return await _databaseContext.TaskStateHistory
+                                .Include(x => x.WorkTask)
+                                .Where(x => x.Timestamp > from
+                                            && x.Timestamp < to)
+                                .ToListAsync();
+    }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Employee } from '../models/employee';
 import { WorkTask } from '../models/workTask';
+import { WorkTaskStats } from '../models/workTaskStats';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,8 @@ export class WorktaskService {
   }
   ChangeState(workTaskId:number,state:number):Observable<any>{
     return this.httpClient.put<any>(environment.serverUrl+'/api/WorkTask/State/'+workTaskId+'/'+state,null);
+  }
+  GetStatistics():Observable<Array<WorkTaskStats>>{
+    return this.httpClient.get<Array<WorkTaskStats>>(environment.serverUrl+'/api/WorkTask/Statistics');
   }
 }
