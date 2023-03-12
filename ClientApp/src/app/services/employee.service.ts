@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Employee } from '../models/employee';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { EmployeeTaskCount } from '../models/employeeTaskCount';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,8 @@ export class EmployeeService {
   Delete(id:number):Observable<any> {
     return this.httpClient.delete<any>(environment.serverUrl + '/api/Employee/'+id); 
   } 
-  GetBest():Observable<Array<Employee>> {
-    return this.httpClient.get<Array<Employee>>(environment.serverUrl + '/api/Employee/Best'); 
+  GetBest():Observable<Array<EmployeeTaskCount>> {
+    return this.httpClient.get<Array<EmployeeTaskCount>>(environment.serverUrl + '/api/Employee/Best'); 
   } 
 
 }

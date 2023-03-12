@@ -57,7 +57,8 @@ public class WorkTaskRepository : IWorkTaskRepository
         wt.Title = workTask.Title;
         wt.Description = workTask.Description;
         wt.DueDate = workTask.DueDate;
-        wt.Assignee = workTask.Assignee;
+        if(workTask.Assignee!=null)
+            wt.Assignee = workTask.Assignee;
         await _databaseContext.SaveChangesAsync();
     }
 }

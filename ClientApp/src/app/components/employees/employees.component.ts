@@ -21,8 +21,8 @@ export class EmployeesComponent implements OnInit {
   Details(id:number)
   {
     let dialogRef = this.dialog.open(EmployeeDetailsComponent, {
-      height: '70%',
-      width: '80%',
+      height: '550px',
+      width: '1500px',
       disableClose:true,
       closeOnNavigation:true,
       data: {employee:this.employees.find(x=>x.id==id)}
@@ -42,8 +42,8 @@ export class EmployeesComponent implements OnInit {
   AddNewEmployee()
   {
     let dialogRef = this.dialog.open(EmployeeDetailsComponent, {
-      height: '70%',
-      width: '80%',
+      height: '550px',
+      width: '500px',
       disableClose:true,
       closeOnNavigation:true,
       data: {}

@@ -30,11 +30,12 @@ public class TaskStateHistoryRepository : ITaskStateHistoryRepository
     {
         return await _databaseContext.TaskStateHistory
                                 .Include(x => x.WorkTask)
+                                .ThenInclude(x => x.Assignee)
                                 .Where(x => x.Timestamp > from
                                             && x.Timestamp < to
                                             && x.State == TaskState.Done
                                             && x.WorkTask != null
-                                            && x.WorkTask.AssigneeId != null)
+                                            && x.WorkTask.AssigneeId != null) 
                                 .ToListAsync();
     }
     public async Task<List<TaskStateRecord>> GetTaskRecordsByDate(DateTime from, DateTime to)
@@ -42,7 +43,7 @@ public class TaskStateHistoryRepository : ITaskStateHistoryRepository
         return await _databaseContext.TaskStateHistory
                                 .Include(x => x.WorkTask)
                                 .Where(x => x.Timestamp > from
-                                            && x.Timestamp < to)
+                                            && x.Timestamp < to) 
                                 .ToListAsync();
     }
 }

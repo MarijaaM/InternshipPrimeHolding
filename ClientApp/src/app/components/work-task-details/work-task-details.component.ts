@@ -110,7 +110,5 @@ export class WorkTaskDetailsComponent implements OnInit {
     {
       alert("Invalid input");
     }
-  }
- 
-
+  } 
 }

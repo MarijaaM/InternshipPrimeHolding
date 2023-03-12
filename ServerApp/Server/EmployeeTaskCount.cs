@@ -2,7 +2,7 @@
 {
     public class EmployeeTaskCount
     {
-        public long EmployeeId { get; set; }
+        public string EmployeeFullName { get; set; } = "";
         public int TaskCount { get; set; }
     }
 }

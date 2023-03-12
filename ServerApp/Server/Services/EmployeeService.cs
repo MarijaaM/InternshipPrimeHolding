@@ -45,26 +45,23 @@ namespace Server.Services
             return employees;
         }
 
-        public async Task<List<Employee?>> GetBest5()
+        public async Task<List<EmployeeTaskCount>> GetBest5()
         {
-            DateTime date = DateTime.Now.AddMonths(0);
+            DateTime date = DateTime.Now.AddMonths(-1);
             DateTime from = new(date.Year, date.Month, 1);
             DateTime to = new (date.Year, (date.Month % 12) + 1, 1);
             List<TaskStateRecord> records = await _taskStateHistoryRepository.GetFinishedTaskRecords(from, to);
 
-            List<EmployeeTaskCount> employeeTaskCounts = records.GroupBy(x => (long)x.WorkTask.AssigneeId)
+            List<EmployeeTaskCount> employeeTaskCounts = records.GroupBy(x => x.WorkTask.Assignee.FullName)
                                                                 .Select(x =>
                                                                     new EmployeeTaskCount()
                                                                     {
-                                                                        EmployeeId = x.Key,
+                                                                        EmployeeFullName = x.Key,
                                                                         TaskCount = x.Count()
                                                                     }
-                                                                ).ToList();
+                                                                ).Take(5).ToList();
 
-            return employeeTaskCounts.OrderByDescending(x => x.TaskCount)
-                                     .Take(5)
-                                     .Select(x => Get(x.EmployeeId).Result)
-                                     .ToList();
+            return employeeTaskCounts;
         }
 
         public async Task Update(long id, Employee employee)

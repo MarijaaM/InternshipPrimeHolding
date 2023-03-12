@@ -10,8 +10,7 @@ import { EmployeeService } from './services/employee.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { WorkTasksComponent } from './components/work-tasks/work-tasks.component';
+import { MatDialogModule } from '@angular/material/dialog'; 
 import { WorkTaskDetailsComponent } from './components/work-task-details/work-task-details.component';
 import { ProjectComponent } from './components/project/project.component';
 import { ProjectsComponent } from './components/projects/projects.component';
@@ -24,8 +23,7 @@ import { BestEmployeesComponent } from './components/best-employees/best-employe
     AppComponent,
     EmployeesComponent,
     NavigationComponent,
-    EmployeeDetailsComponent,
-    WorkTasksComponent,
+    EmployeeDetailsComponent, 
     WorkTaskDetailsComponent,
     ProjectComponent,
     ProjectsComponent,

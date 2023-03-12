@@ -81,11 +81,8 @@ namespace Server.Controllers
         }
         [HttpGet("Best")]
         public async Task<IActionResult> GetBest5()
-        {
-            List<EmployeeDTO> employees = (await _employeeService.GetBest5())
-                                                                    .Select(x => _customMapper.MapEmpoloyee(x))
-                                                                    .ToList();
-            return Ok(employees);
+        { 
+            return Ok(await _employeeService.GetBest5());
         }
     }
 }
